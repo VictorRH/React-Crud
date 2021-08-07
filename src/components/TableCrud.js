@@ -5,11 +5,12 @@ import SpinnerDatas from '../Spinner/SpinnerDatas';
 import ControlTyping from '../Tool/ControlTyping';
 import FormCrud from './FormCrud';
 import swal from 'sweetalert';
-
+import { useHistory, withRouter } from "react-router-dom";
+import EditStudent from './EditStudent';
 const TableCrud = () => {
+    let history = useHistory();
 
     const [responseData, setResponseData] = useState([]);
-
     const [textSearchStorage, setTextSearchStorage] = useState("");
     const typingSearchText = ControlTyping(textSearchStorage, 900);
 
@@ -56,7 +57,7 @@ const TableCrud = () => {
         DeleteStudent(id).then(response => {
             if (response?.status === 200) {
                 allStudents();
-                swal("Deleted!", "student is deleted!", "success");
+                swal("Deleted!", "Student removed", "success");
                 return;
             } if (response?.status === 400 || response?.status === 500 || response?.status === 404) {
                 swal("Error!", "The student was not deleted!", "warning");
@@ -80,6 +81,19 @@ const TableCrud = () => {
         }))
     }
 
+    const editBtn = (id) => {
+        if (!id) {
+            swal("Error", "Student not Found", "error");
+            return;
+        }
+
+        history.push('/auth/EditStudent/' + id)
+    }
+
+    const btnNew = () => {
+        history.push('/auth/NewStudent');
+        return;
+    }
     return (
         <Container component="main" maxWidth="md">
             <div style={{
@@ -92,7 +106,6 @@ const TableCrud = () => {
                     <Typography>Example Crud React With Asp net core</Typography>
                 </CardContent>
             </div>
-
             {
                 !responseData?.data ? <SpinnerDatas /> :
                     <FormCrud
@@ -102,6 +115,8 @@ const TableCrud = () => {
                         paginationRequest={paginationRequest}
                         changePage={changePage}
                         changeTotalElements={changeTotalElements}
+                        btnNew={btnNew}
+                        editBtn={editBtn}
                     />
             }
 
@@ -110,4 +125,4 @@ const TableCrud = () => {
     );
 }
 
-export default TableCrud;
+export default withRouter(TableCrud);

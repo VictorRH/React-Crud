@@ -1,6 +1,6 @@
 import { Button, Grid, Hidden, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from "@material-ui/core";
 
-const FormCrud = ({ responseData, setTextSearchStorage, btnDelete, changeTotalElements, changePage, paginationRequest }) => {
+const FormCrud = ({ editBtn, btnNew, responseData, setTextSearchStorage, btnDelete, changeTotalElements, changePage, paginationRequest }) => {
 
 
     const { data } = responseData;
@@ -11,16 +11,23 @@ const FormCrud = ({ responseData, setTextSearchStorage, btnDelete, changeTotalEl
     return (
         <div style={{ padding: "10px", width: "100%" }}>
             <Grid container style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-                <Grid item xs={12} sm={4} md={6}>
-                    <TextField fullWidth
-                        name="textSearchStorage"
-                        variant="outlined"
-                        label="search student in table"
-                        // inputProps={{ style={ backgroundColor: "black", color: "white" } }}
-                        // InputLabelProps={{ style={ backgroundColor: "black", color: "white" } }}
-                        onChange={e => setTextSearchStorage(e.target.value)}
-                    >
-                    </TextField>
+                <Grid container spacing={2}>
+                    <Grid item xs={6} sm={6}>
+                        <TextField fullWidth
+                            name="textSearchStorage"
+                            variant="outlined"
+                            label="search student in table"
+                            // inputProps={{ style={ backgroundColor: "black", color: "white" } }}
+                            // InputLabelProps={{ style={ backgroundColor: "black", color: "white" } }}
+                            onChange={e => setTextSearchStorage(e.target.value)}
+                        >
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6} sm={6} >
+                        <Button variant="contained" onClick={() => btnNew()} size="small" color="primary">
+                            New
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
             <TableContainer >
@@ -42,8 +49,6 @@ const FormCrud = ({ responseData, setTextSearchStorage, btnDelete, changeTotalEl
                     <TableBody>
                         {responseData.status == 200 ?
                             Object.keys(data[0]?.studentList).map((students, index) => (
-                                // console.log('data table', data[0]?.studentList[students])
-
                                 <TableRow key={index}>
                                     <TableCell align="left" >{data[0]?.studentList[students]?.firstname}</TableCell>
                                     <TableCell align="left" >{data[0]?.studentList[students]?.lastname}</TableCell>
@@ -56,7 +61,7 @@ const FormCrud = ({ responseData, setTextSearchStorage, btnDelete, changeTotalEl
 
                                     </Hidden>
                                     <TableCell align="left">
-                                        <Button variant="contained" size="small" color="primary">
+                                        <Button variant="contained" onClick={() => editBtn(data[0]?.studentList[students]?.id)} size="small" color="primary">
                                             Edit
                                         </Button>
                                     </TableCell>

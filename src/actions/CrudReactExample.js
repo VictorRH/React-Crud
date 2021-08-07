@@ -22,4 +22,33 @@ export const DeleteStudent = (id) => {
     });
 }
 
+export const NewStudent = (object) => {
+    return new Promise((resolve, eject) => {
+        HttpClient.post('/ExampleIdentity', object).then(response => {
+            resolve(response);
+        }).catch(error => {
+            resolve(error.response);
+        })
+    })
+}
+
+export const GetStudentId = (id) => {
+    return new Promise((resolve, eject) => {
+        HttpClient.get(`ExampleIdentity/${id}`).then(response => {
+            resolve(response);
+        }).catch(error => {
+            resolve(error.response);
+        })
+    })
+}
+
+export const UpdateStudents = (object) => {
+    return new Promise((resolve, eject) => {
+        HttpClient.put('/ExampleIdentity/', object).then(response => {
+            resolve(response);
+        }).catch(error => {
+            resolve(error.response);
+        });
+    });
+}
 
